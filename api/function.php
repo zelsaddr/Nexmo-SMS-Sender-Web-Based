@@ -14,16 +14,6 @@ class mazterin_sms
         $this->message  = urlencode($message);
         $this->angka = explode("|", $challenge);
     }
-    public function challenge()
-    {
-        $first  = trim($this->angka[0]);
-        $second = trim($this->angka[1]);
-        $hasil  = trim($this->angka[2]);
-        $result = $first + $second;
-        if($hasil != $result){ 
-            return $this->json_builder("400", "Are you robot? Wrong Answer!"); die(); 
-        }
-    }
     public function kirim()
     {
         if($this->challenge() == NULL){
@@ -54,7 +44,18 @@ class mazterin_sms
             return $this->challenge();
         }
     }
-    private function validate(){
+    private function challenge()
+    {
+        $first  = trim($this->angka[0]);
+        $second = trim($this->angka[1]);
+        $hasil  = trim($this->angka[2]);
+        $result = $first + $second;
+        if($hasil != $result){ 
+            return $this->json_builder("400", "Are you robot? Wrong Answer!"); die(); 
+        }
+    }
+    private function validate()
+    {
         if(strlen($this->nomor) > 15 || strlen($this->nomor) <= 8){ return $this->json_builder("500", "Number Length should be under 16 and minimum 8 number"); die(); }
         if(strlen($this->from) > 11){ return $this->json_builder("500", "From Name Length should be under 12"); die(); }
         if(strlen($this->message) < 1){ return $this->json_builder("500", "Message form should be filled."); }
